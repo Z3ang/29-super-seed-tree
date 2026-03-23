@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>29 SUPER SEED 家族樹</title>
+    <title>29 SUPER SEED 家族檔案室</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,114 +17,183 @@
             border-radius: 0 !important; /* 絕對直角 */
         }
 
-        /* 粗野主義背景：螢光黃綠 + 黑色網格 */
+        /* 需求：視覺參考 [翻檔案資料夾] */
+        /* 背景改成溫暖的淺牛皮紙色，模擬公公/老爸檔案夾 #EADCC8 */
         body { 
-            background-color: #DEFF1A; /* 參考圖的螢光黃綠 */
-            background-image: linear-gradient(#00000020 1px, transparent 1px), linear-gradient(90deg, #00000020 1px, transparent 1px);
+            background-color: #EADCC8; 
+            background-image: linear-gradient(#00000010 1px, transparent 1px), linear-gradient(90deg, #00000010 1px, transparent 1px);
             background-size: 30px 30px;
             color: #000; 
             text-align: center; 
             padding: 20px; 
             margin: 0;
+            line-height: 1.4;
         }
         
-        /* 票券感的標題區塊 */
-        .header-container {
+        /* 檔案袋的 Header 區塊 (公文封) */
+        .file-header-container {
             background-color: #FFFFFF;
-            border: 4px solid #000000;
-            box-shadow: 10px 10px 0px #000000; /* 硬邊黑陰影 */
-            max-width: 800px;
+            border: 5px solid #000000;
+            box-shadow: 12px 12px 0px #000000; /* 超硬邊黑陰影 */
+            max-width: 850px;
             margin: 0 auto 30px auto;
-            padding: 20px;
-            display: inline-block;
-            width: 100%;
+            padding: 30px;
+            position: relative;
         }
 
         h1 { 
-            font-size: 2.5em; 
-            letter-spacing: 5px; 
+            font-size: 3.2em; 
+            letter-spacing: 7px; 
             font-weight: bold; 
-            margin: 0 0 15px 0; 
-            border-bottom: 4px solid #000; 
-            padding-bottom: 15px;
+            margin: 0 0 20px 0; 
+            border-bottom: 5px solid #000; 
+            padding-bottom: 10px;
             text-transform: uppercase;
         }
         
-        /* 搜尋框設計 */
-        .search-box { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        /* 搜尋框設計 (粗野擬物) */
+        .search-box { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
         input[type="text"] { 
-            padding: 12px; 
-            width: 250px; 
-            border: 3px solid #000; 
-            font-size: 18px; 
+            padding: 15px; 
+            width: 280px; 
+            border: 4px solid #000; 
+            background-color: #fff;
+            font-size: 20px; 
             font-weight: bold;
+            color: #000;
             outline: none;
+            box-shadow: inset 4px 4px 0px rgba(0,0,0,0.1);
         }
         button { 
-            padding: 12px 25px; 
+            padding: 15px 30px; 
             background-color: #000; 
-            color: #DEFF1A; 
-            border: 3px solid #000; 
+            color: #DEFF1A; /* 螢光黃綠 */
+            border: 4px solid #000; 
             cursor: pointer; 
             font-weight: bold; 
-            font-size: 18px; 
-            transition: 0.1s;
+            font-size: 20px; 
+            text-transform: uppercase;
         }
-        button:hover { background-color: #FFFFFF; color: #000; }
+        button:hover { background-color: #DEFF1A; color: #000; }
         
-        /* 選項區塊 */
-        #options-container { margin-bottom: 20px; }
-        .option-btn { 
-            margin: 5px; 
+        /* 需求：視覺參考 [翻檔案資料夾] -> 索引貼卡 (Tabs) */
+        /* 選項區塊（遇到同名同姓時，像檔案夾頂部的索引標籤） */
+        #options-container { 
+            margin: -30px auto 40px auto;
+            max-width: 850px;
+            display: flex;
+            justify-content: flex-end; /* 讓 Tabs 從右側貼上檔案袋 */
+            gap: 5px;
+            padding-right: 15px;
+        }
+        
+        .file-tab { 
             background-color: #FFF; 
             color: #000; 
-            border: 3px solid #000; 
-            padding: 10px 20px; 
+            border: 4px solid #000; 
+            border-bottom: none; /* 底部不封口，模擬貼在公文袋上 */
+            padding: 10px 18px; 
             cursor: pointer; 
-            box-shadow: 4px 4px 0px #000; 
             font-size: 16px; 
             font-weight: bold;
+            transition: 0.1s;
+            position: relative;
+            z-index: 2; /* 確保 Tab 在檔案袋上方 */
         }
-        .option-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #000; }
+        .file-tab:hover, .file-tab.active { 
+            background-color: #DEFF1A; /* 螢光黃綠 */
+            color: #000;
+        }
+        .file-tab::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: -4px;
+            width: calc(100% + 8px);
+            height: 8px;
+            background-color: inherit;
+            border-left: 4px solid #000;
+            border-right: 4px solid #000;
+            z-index: -1;
+        }
         
-        /* 孤單彩蛋 */
-        .easter-egg { 
-            background: #000; 
-            color: #DEFF1A; 
-            padding: 20px; 
-            border: 4px solid #000; 
+        /* 孤單彩蛋 (檔案夾上的黑戳印) */
+        .file-easter-egg { 
+            background-color: #FFFFFF;
+            color: #000;
+            padding: 25px; 
+            border: 5px solid #000; 
             display: inline-block; 
-            box-shadow: 8px 8px 0px #FFFFFF; 
+            box-shadow: 12px 12px 0px #000000; 
             font-size: 1.5em; 
             margin-top: 30px; 
+            position: relative;
+        }
+        .file-easter-egg::before {
+            content: "FILE: SEED-SOLO";
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 0.6em;
+            opacity: 0.3;
         }
         
-        /* 樹狀圖畫布 */
-        #tree-network { 
+        /* 需求：視覺參考 [翻檔案資料夾] -> 公文袋 */
+        /* 裝載樹狀圖的檔案夾容器 */
+        #tree-network-container {
             width: 100%; 
-            height: 65vh; 
-            background-color: #FFFFFF; 
-            border: 4px solid #000000; 
-            box-shadow: 12px 12px 0px #000000; 
+            height: 68vh; 
+            max-width: 1100px;
+            background-color: #FFFFFF; /* 檔案袋內部：簡約簡潔 (#F0F0F0) */
+            background-image: linear-gradient(#00000008 1px, transparent 1px), linear-gradient(90deg, #00000008 1px, transparent 1px);
+            background-size: 15px 15px;
+            border: 5px solid #000000; 
+            box-shadow: 15px 15px 0px #FFFFFF; /* 檔案層疊感陰影：純白 */
             display: none; 
             margin: 0 auto;
-            max-width: 1100px;
+            position: relative;
+        }
+        
+        /* 檔案夾上方的索引列 */
+        .file-index-bar {
+            width: 100%;
+            background-color: #000;
+            color: #DEFF1A;
+            padding: 5px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* 真正的樹狀圖畫布 */
+        #tree-network { 
+            width: 100%; 
+            height: calc(100% - 30px); /* 扣掉索引列高度 */
         }
     </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <h1>！家族樹！</h1>
+    <div class="file-header-container">
+        <h1>！家族檔案室！</h1>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="ex: 王小明">
-            <button onclick="searchName()">尋找</button>
+            <button onclick="searchName()">歸檔查詢</button>
         </div>
     </div>
 
     <div id="options-container"></div>
+    
     <div id="easter-egg-container"></div>
-    <div id="tree-network"></div>
+    
+    <div id="tree-network-container">
+        <div class="file-index-bar">
+            <span>NO.1 - 32 / AD-TREE / FILE</span>
+            <span id="file-current-target">TARGET: ALL</span>
+        </div>
+        <div id="tree-network"></div>
+    </div>
 
     <script>
         let treeData = null;
@@ -138,29 +207,31 @@
         function searchName() {
             const inputName = document.getElementById('searchInput').value.trim();
             const optionsContainer = document.getElementById('options-container');
-            const networkContainer = document.getElementById('tree-network');
+            const networkContainer = document.getElementById('tree-network-container');
             const eggContainer = document.getElementById('easter-egg-container');
+            const targetDisplay = document.getElementById('file-current-target');
             
             optionsContainer.innerHTML = '';
             eggContainer.innerHTML = '';
             networkContainer.style.display = 'none';
+            targetDisplay.innerText = `TARGET: ALL`;
 
             if (!inputName || !treeData) return;
 
             const matches = treeData.nodes.filter(n => n.name === inputName);
 
             if (matches.length === 0) {
-                optionsContainer.innerHTML = '<p style="font-size:18px; font-weight:bold; background:#fff; border:3px solid #000; display:inline-block; padding:10px;">找不到這個名字耶，確認一下有沒有打錯字？</p>';
+                optionsContainer.innerHTML = '<p style="font-size:18px; font-weight:bold; background:#000; color:#DEFF1A; border:3px solid #000; display:inline-block; padding:10px 20px;">[ERROR] 檔案不存在</p>';
                 return;
             }
 
             if (matches.length > 1) {
-                optionsContainer.innerHTML = '<p style="font-weight:bold; font-size:18px;">發現多位同名學長姐/學弟妹，請選擇屆數：</p>';
+                optionsContainer.innerHTML = '<p style="font-weight:bold; font-size:18px; color:#000; margin-right:15px; margin-top:5px;">[多筆檔案] 請選擇檔案標籤：</p>';
                 matches.forEach(match => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.innerText = `第 ${match.generation} 屆`;
-                    btn.onclick = () => renderTree(match);
+                    const btn = document.createElement('div');
+                    btn.className = 'file-tab'; // 需求：索引貼卡 (Tabs)
+                    btn.innerText = `NO.${match.generation}`;
+                    btn.onclick = () => renderTree(match, btn); // 將按鈕傳入，標示為 active
                     optionsContainer.appendChild(btn);
                 });
             } else {
@@ -168,15 +239,22 @@
             }
         }
 
-        function renderTree(targetNode) {
-            document.getElementById('options-container').innerHTML = ''; 
-            const networkContainer = document.getElementById('tree-network');
+        function renderTree(targetNode, activeTab) {
+            // 清除原本的 active Tab
+            const tabs = document.querySelectorAll('.file-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            if (activeTab) activeTab.classList.add('active'); // 標示目前翻閱的 Tab
+
+            const networkContainer = document.getElementById('tree-network-container');
             const eggContainer = document.getElementById('easter-egg-container');
+            const targetDisplay = document.getElementById('file-current-target');
+
+            targetDisplay.innerText = `TARGET: GEN.${targetNode.generation}-${targetNode.name}`;
 
             if (targetNode.isIsolated) {
                 networkContainer.style.display = 'none';
                 eggContainer.innerHTML = `
-                    <div class="easter-egg">
+                    <div class="file-easter-egg">
                         ✨ 全家就是你家！獨立生長的酷酷靈魂 ✨<br><br>
                         NO.${targetNode.generation} - ${targetNode.name}
                     </div>
@@ -198,20 +276,20 @@
                         shape: 'box',
                         shapeProperties: { borderRadius: 0 },
                         margin: 15,
-                        borderWidth: 3,
+                        borderWidth: 4,
                         color: { background: '#FFFFFF', border: '#000000' },
                         font: { size: 18, color: '#000000', face: 'DotGothic16', bold: true }
                     };
 
-                    // 第29屆：視覺反轉！純黑底色 + 螢光黃綠字
+                    // 第29屆：視覺反轉！純黑底色 + 螢光黃綠字 (Brutalism色塊)
                     if (n.isSuperSeed) {
                         nodeStyle.color = { background: '#000000', border: '#000000' };
-                        nodeStyle.font = { color: '#DEFF1A', size: 20 };
+                        nodeStyle.font = { color: '#DEFF1A', size: 22 };
                     }
 
-                    // 搜尋的主角加上紅色粗框強調
+                    // 搜尋的主角加上紅色粗框強調 (文字排列藝術)
                     if (n.id === targetNode.id) {
-                        nodeStyle.borderWidth = 5;
+                        nodeStyle.borderWidth = 6;
                         nodeStyle.color.border = '#FF0000'; 
                     }
 
@@ -225,7 +303,7 @@
                     to: l.target,
                     arrows: 'to',
                     color: { color: '#000000' }, // 粗黑連線
-                    width: 2,
+                    width: 2.5,
                     smooth: false // 俐落直線
                 }))
             );
@@ -247,7 +325,7 @@
             };
 
             if (network !== null) { network.destroy(); }
-            network = new vis.Network(networkContainer, { nodes: visNodes, edges: visEdges }, options);
+            network = new vis.Network(document.getElementById('tree-network'), { nodes: visNodes, edges: visEdges }, options);
             
             network.once('afterDrawing', function() {
                 network.focus(targetNode.id, {
