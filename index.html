@@ -4,34 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>！家族樹！</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    
     <style>
-        /* 基礎排版設定 */
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #F5F5F5; color: #333; text-align: center; padding: 20px; }
-        h1 { color: #88B04B; letter-spacing: 2px; }
+        /* 需求：視覺參考 [像素] [簡約現代] */
+        * {
+            /* 全網頁套用像素字體 */
+            font-family: 'DotGothic16', sans-serif !important; 
+            /* 所有框框改成直角，更簡約 */
+            border-radius: 0 !important; 
+        }
+
+        /* 基礎排版設定 (簡約灰白) */
+        body { background-color: #F0F0F0; color: #000000; text-align: center; padding: 20px; line-height: 1.6; }
         
-        /* 搜尋框設計 */
+        /* 標題需求：！家族樹！ (純文字排列，加大間距) */
+        h1 { color: #000000; letter-spacing: 5px; font-weight: bold; margin-bottom: 40px; }
+        
+        /* 搜尋框設計 (簡約現代) */
         .search-box { margin: 20px; }
-        input[type="text"] { padding: 10px; width: 200px; border: 2px solid #ccc; border-radius: 5px; font-size: 16px; }
-        button { padding: 10px 15px; background-color: #88B04B; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        button:hover { background-color: #769941; }
+        input[type="text"] { padding: 12px; width: 220px; border: 2px solid #000000; background-color: #fff; font-size: 18px; color: #000; box-shadow: 4px 4px 0px #000000; /* 簡單的像素陰影 */ }
+        button { padding: 12px 20px; background-color: #000000; color: #fff; border: 2px solid #000000; cursor: pointer; font-weight: bold; font-size: 18px; margin-left: 10px; box-shadow: 4px 4px 0px #888; }
+        button:hover { background-color: #444444; color: #fff; border-color: #444444; }
         
         /* 選項與彩蛋區域 */
-        #options-container { margin-bottom: 20px; }
-        .option-btn { margin: 5px; background-color: #e0e0e0; color: #333; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-        .option-btn:hover { background-color: #ccc; }
-        .easter-egg { color: #ff9800; font-weight: bold; margin-top: 30px; font-size: 1.2em; }
+        #options-container { margin-bottom: 30px; }
+        .option-btn { margin: 5px; background-color: #fff; color: #000; border: 2px solid #000; padding: 10px 18px; cursor: pointer; box-shadow: 3px 3px 0px #000; font-size: 16px; }
+        .option-btn:hover { background-color: #E0E0E0; }
         
-        /* 動態樹狀圖的專屬畫布範圍 */
+        .easter-egg { color: #000000; font-weight: bold; margin-top: 50px; font-size: 1.4em; letter-spacing: 1px; }
+        
+        /* 動態樹狀圖的專屬畫布範圍 (簡約簡潔) */
         #tree-network { 
             width: 100%; 
-            height: 60vh; /* 佔據螢幕 60% 高度 */
+            height: 65vh; 
             background-color: #ffffff; 
-            border: 2px dashed #ccc; 
-            border-radius: 10px; 
-            display: none; /* 一開始先隱藏，搜尋後才顯示 */
+            border: 3px solid #000000; 
+            box-shadow: 8px 8px 0px #ccc; /* 像素風大陰影 */
+            display: none; 
             margin: 0 auto;
-            max-width: 1000px;
+            max-width: 1100px;
         }
     </style>
 </head>
@@ -75,7 +92,7 @@
             const matches = treeData.nodes.filter(n => n.name === inputName);
 
             if (matches.length === 0) {
-                optionsContainer.innerHTML = '<p>找不到這個名字耶，要不要檢查看看有沒有打錯字？</p>';
+                optionsContainer.innerHTML = '<p>找不到這個名字耶，確認一下有沒有打錯字？</p>';
                 return;
             }
 
@@ -103,7 +120,7 @@
                 networkContainer.style.display = 'none';
                 eggContainer.innerHTML = `
                     <div class="easter-egg">✨ 全家就是你家！獨立生長的酷酷靈魂 ✨<br><br>
-                    <span style="color:#88B04B">第 ${targetNode.generation} 屆 ${targetNode.name}</span></div>
+                    第 ${targetNode.generation} 屆 > ${targetNode.name}</div>
                 `;
                 return;
             }
@@ -121,28 +138,29 @@
             // 3. 把資料轉換成動態圖表看得懂的格式
             const visNodes = new vis.DataSet(
                 familyNodes.map(n => {
+                    // 需求：視覺參考 [簡約現代] [文字排列藝術]
+                    // 我們將屆數和名字縮排，並加大名字字體，取消圓角。
                     let nodeStyle = {
                         id: n.id,
-                        label: `第 ${n.generation} 屆\n${n.name}`,
+                        label: `NO.${n.generation}\n${n.name}`, // 層次排列
                         shape: 'box',
-                        margin: 10,
+                        shapeProperties: { borderRadius: 0 }, // 銳利直角 (像素感)
+                        margin: 15,
                         borderWidth: 2,
-                        color: { background: 'white', border: '#ccc' },
-                        font: { size: 16, color: '#333' }
+                        color: { background: '#FFFFFF', border: '#000000' }, // 簡約黑白
+                        font: { size: 16, color: '#000000', face: 'DotGothic16', bold: false } // 像素字體
                     };
 
-                    // 第29屆專屬發光特效
+                    // 第29屆專屬特效 (黃綠色特定代表色 - 簡約扁平化)
                     if (n.isSuperSeed) {
-                        nodeStyle.color = { background: '#fafff0', border: '#88B04B' };
-                        nodeStyle.borderWidth = 3;
-                        nodeStyle.font = { color: '#88B04B', bold: true };
-                        nodeStyle.shadow = { enabled: true, color: 'rgba(136, 176, 75, 0.6)', size: 10 };
+                        nodeStyle.color = { background: '#88B04B', border: '#88B04B' }; // 用大塊顏色強調
+                        nodeStyle.font = { color: '#FFFFFF', bold: true, size: 18 }; // 白色文字提高對比
                     }
 
-                    // 搜尋的主角加上橘色外框強調
+                    // 搜尋的主角加上橘色外框強調 (文字排列藝術)
                     if (n.id === targetNode.id) {
                         nodeStyle.borderWidth = 4;
-                        nodeStyle.color.border = '#ff9800';
+                        nodeStyle.color.border = '#ff9800'; 
                     }
 
                     return nodeStyle;
@@ -154,28 +172,33 @@
                     from: l.source,
                     to: l.target,
                     arrows: 'to', // 畫出由上往下的箭頭
-                    color: { color: '#bbb' }
+                    color: { color: '#666666' }, // 灰線更簡約
+                    smooth: false // 需求：視覺參考 [簡約現代] - 用直線連線，不用曲線
                 }))
             );
 
-            // 4. 設定動態樹狀圖的排版規則與物理動畫
+            // 4. 設定物理動畫效果 (保留彈彈的可愛感) 與 排版
             const options = {
                 layout: {
                     hierarchical: {
                         direction: 'UD', // 由上往下 (Up-Down)
                         sortMethod: 'directed',
-                        levelSeparation: 90, // 上下層的間距
-                        nodeSpacing: 180 // 左右節點的間距
+                        levelSeparation: 110, // 上下層的間距 (調大一點)
+                        nodeSpacing: 220 // 左右節點的間距 (調大，增加文字排列空間)
                     }
                 },
                 physics: {
                     hierarchicalRepulsion: {
-                        nodeDistance: 150
+                        nodeDistance: 200, // 增加排斥距離，讓圖散開
+                        damping: 0.1 // 增加一點阻尼，讓它不要彈太久，更有質感
+                    },
+                    stabilization: {
+                        iterations: 150 // 搜尋後快速穩定
                     }
                 },
                 interaction: {
-                    dragNodes: true, // 允許滑鼠拖曳節點
-                    zoomView: true   // 允許滑鼠滾輪縮放
+                    dragNodes: true, 
+                    zoomView: true   
                 }
             };
 
@@ -185,12 +208,12 @@
             }
             network = new vis.Network(networkContainer, { nodes: visNodes, edges: visEdges }, options);
             
-            // 需求4：畫完之後，讓畫面以動畫自動聚焦放大到「被搜尋的那個人」身上
+            // 畫完之後，讓畫面以動畫自動聚焦放大到「被搜尋的那個人」身上
             network.once('afterDrawing', function() {
                 network.focus(targetNode.id, {
-                    scale: 1.2,
+                    scale: 1.0,
                     animation: {
-                        duration: 1200, // 動畫時間 1.2 秒
+                        duration: 1000, // 動畫時間 1 秒
                         easingFunction: 'easeInOutQuad'
                     }
                 });
